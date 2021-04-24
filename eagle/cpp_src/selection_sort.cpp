@@ -1,14 +1,4 @@
-
-#include <iostream>
-#include <vector>
-
-template<typename T>
-static void my_print(std::vector<T> &arr){
-    for(auto i = 0; i < arr.size(); i++){
-        std::cout << arr[i] << " ";
-    }
-    std::cout << std::endl;
-}
+#include "my_print.hpp"
 
 template<typename T>
 void selection_sort(std::vector<T> &arr){  //通过引用的方式把外部 arr的地址传进来
