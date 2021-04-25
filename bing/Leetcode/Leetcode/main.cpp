@@ -62,11 +62,11 @@ std::vector<int> Test(std::vector<int> &nums, int target) {
 	std::vector<int> vTrans;
 	int nTotal1 = 0;
 
-	for (int iter = 0; iter < nums.size(); iter++) {
+	for (int iter = 0; iter < int(nums.size()); iter++) {
 		if (vTrans.size() != 0) {
 			int nCurr = nums.at(iter);
 			int nTotal2 = 0;
-			for (int iterT = 0; iterT < vTrans.size(); iterT++) {
+			for (int iterT = 0; iterT < int(vTrans.size()); iterT++) {
 				int nTest = vTrans.at(iterT) + nCurr;
 				if (nTest == target) {
 					vResult.push_back(nTotal1);
@@ -250,8 +250,52 @@ bool isPalindrome(int x)
 	else return false;
 }
 
+/*
+求一个数组中的最小数
+*/
+int min(std::vector<int> InPut) {
+	int nResurt = 0;
+	int nTrans = InPut.at(0);
+	for (int i = 0; i < int(InPut.size()); i++) {
+		if (i + 1 <= int(InPut.size())) {
+			if (InPut.at(i) < InPut.at(i + 1) && InPut.at(i) <= nTrans) {
+				nTrans = InPut.at(i);
+			}
+			else if (InPut.at(i + 1) <= nTrans) {
+				nTrans = InPut.at(i + 1);
+			}
+		}
+	}
+	nResurt = nTrans;
+	return nResurt;
+}
+
+/*
+选择排序 升序
+*/
+std::vector<int> selectionSort(std::vector<int> InPut) {
+	int nTrans, nminIndex = 0;
+	for (int i = 0; i < int(InPut.size()); i++) {
+		nminIndex = i;
+		for (int j = i + 1; j < int(InPut.size()); j++) {
+			if (InPut.at(j) < InPut.at(nminIndex)) {
+				nminIndex = j;
+			}
+		}
+		nTrans = InPut.at(i);
+		InPut.at(i) = InPut.at(nminIndex);
+		InPut.at(nminIndex) = nTrans;	
+	}
+	return InPut;
+}
+
 int main(int argc, char* argv[])
 {
+	std::vector<int> In = { 6,0,1,2,3,8,4,5 };
+	std::vector<int> Out = selectionSort(In);
+	for (int i = 0; i < int(Out.size()); i++) {
+		std::cout << Out.at(i)<<std::endl;
+	}
 	system("pause");
 	return 0;
 }
