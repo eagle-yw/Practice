@@ -289,12 +289,29 @@ std::vector<int> selectionSort(std::vector<int> InPut) {
 	return InPut;
 }
 
+/************************************************************************/
+/* 2021-4-26
+*  Description:冒泡排序 
+*  Auto:Bing
+/************************************************************************/
+template<typename T>
+void bubbleSort(std::vector<T> &Input) {
+	for (int i = 0; i < int(Input.size() - 1); i++) {
+		for (int j = 0; j < int(Input.size() - 1); j++) {
+			if (Input.at(j) < Input.at(j + 1)) {
+				std::swap(Input.at(j), Input.at(j + 1));
+			}
+		}
+	}
+}
+
 int main(int argc, char* argv[])
 {
-	std::vector<int> In = { 6,0,1,2,3,8,4,5 };
-	std::vector<int> Out = selectionSort(In);
-	for (int i = 0; i < int(Out.size()); i++) {
-		std::cout << Out.at(i)<<std::endl;
+	std::vector<int> In = { 9,6,0,1,2,3,8,4,5 };
+	//std::vector<int> Out = selectionSort(In);
+	bubbleSort(In);
+	for (int i = 0; i < int(In.size()); i++) {
+		std::cout << In.at(i)<<std::endl;
 	}
 	system("pause");
 	return 0;
