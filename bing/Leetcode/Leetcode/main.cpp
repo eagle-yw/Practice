@@ -305,11 +305,46 @@ void bubbleSort(std::vector<T> &Input) {
 	}
 }
 
+/************************************************************************/
+/* 2021-4-27
+*  Description:QuickSort  use Recursion
+*  Auto:Bing
+/************************************************************************/
+template<typename T>
+void quickSort(std::vector<T> &Input, int nLeft, int nRight) {
+	if (nLeft > nRight)
+		return;
+	int nBaseNumber = Input.at(nLeft);
+	int nSentinelA = nLeft;
+	int nSentinelB = nRight;
+	while (nSentinelA != nSentinelB)
+	{
+		while (Input.at(nSentinelB) >= nBaseNumber && nSentinelA < nSentinelB)
+			nSentinelB--;
+		while (Input.at(nSentinelA) <= nBaseNumber && nSentinelA < nSentinelB)
+			nSentinelA++;
+
+		if (nSentinelA < nSentinelB) {
+			//sentinels doesn't meet
+			std::swap(Input.at(nSentinelA), Input.at(nSentinelB));	//exchange them site
+		}
+	}
+	//when they meet
+	std::swap(Input.at(nSentinelA), Input.at(nLeft));
+
+	//and then do recursion
+	quickSort(Input, nLeft, nSentinelA - 1);
+	quickSort(Input, nSentinelA + 1, nRight);
+	return;
+
+}
+
 int main(int argc, char* argv[])
 {
 	std::vector<int> In = { 9,6,0,1,2,3,8,4,5 };
 	//std::vector<int> Out = selectionSort(In);
-	bubbleSort(In);
+	//bubbleSort(In);
+	quickSort(In, 0, int(In.size() - 1));
 	for (int i = 0; i < int(In.size()); i++) {
 		std::cout << In.at(i)<<std::endl;
 	}
