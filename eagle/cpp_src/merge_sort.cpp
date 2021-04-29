@@ -72,7 +72,7 @@ void merge_sort_iteration(std::vector<T> &arr){
 
 int main(int argc, char const *argv[])
 {
-    std::cout << "--shell_sort--" << std::endl;
+    std::cout << "--merge_sort--" << std::endl;
     
     std::vector<int> arr = {2, 4, 5, 3, 1}; 
     
