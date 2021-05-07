@@ -339,12 +339,33 @@ void quickSort(std::vector<T> &Input, int nLeft, int nRight) {
 
 }
 
+/************************************************************************/
+/* 2021-5-6
+*  Description:Insertion Sort 
+*  Auto:Bing
+/************************************************************************/
+template<typename T>
+void InsertionSort(std::vector<T> &Input) {
+	int i, j, nKey = 0;
+	for (i = 1; i < int(Input.size()); i++){
+		j = i - 1;
+		nKey = Input.at(i);
+		while (j >= 0 && Input.at(j) > nKey)
+		{
+			std::swap(Input.at(j), Input.at(j + 1));
+			j--;
+		}
+		Input.at(j+1) = nKey;//???
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	std::vector<int> In = { 9,6,0,1,2,3,8,4,5 };
 	//std::vector<int> Out = selectionSort(In);
 	//bubbleSort(In);
-	quickSort(In, 0, int(In.size() - 1));
+	//quickSort(In, 0, int(In.size() - 1));
+	InsertionSort(In);
 	for (int i = 0; i < int(In.size()); i++) {
 		std::cout << In.at(i)<<std::endl;
 	}
