@@ -9,14 +9,18 @@ import (
 type H map[string]interface{}
 
 type Context struct {
+	//origin objects
 	Writer http.ResponseWriter
 	Req *http.Request
-
+	//request info
 	Path string
 	Method string
 	Params map[string]string
-
+	//response info
 	StatusCode int
+	//middleware
+	handlers []HandlerFunc
+	index int
 }
 
 func newContext(w http.ResponseWriter, r *http.Request) *Context{
@@ -25,7 +29,21 @@ func newContext(w http.ResponseWriter, r *http.Request) *Context{
 		Req: r,
 		Path: r.URL.Path,
 		Method: r.Method,
+		index: -1,
 	}
+}
+
+func (c *Context)Next(){
+	c.index++
+	s := len(c.handlers)
+	for ; c.index < s; c.index++ {
+		c.handlers[c.index](c)
+	}
+}
+
+func (c *Context)Fail(code int, err string){
+	c.index = len(c.handlers)
+	c.JSON(code, H{"message":err})
 }
 
 func (c *Context)PostForm(key string) string {
