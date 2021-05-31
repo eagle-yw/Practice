@@ -355,7 +355,33 @@ void InsertionSort(std::vector<T> &Input) {
 			std::swap(Input.at(j), Input.at(j + 1));
 			j--;
 		}
-		Input.at(j+1) = nKey;//???
+		Input.at(j+1) = nKey;// insert
+	}
+}
+
+/************************************************************************/
+/* 2021-5-31
+*  Description: shell sort
+*  Auto:Bing
+/************************************************************************/
+template<typename T>
+void ShellSort(std::vector<T> &Input) {
+	int nflag = 1, nLength = Input.size();
+	while (nflag < nLength /3)
+	{
+		nflag = nflag * 3 + 1;//?
+	}
+	while (nflag >= 1)
+	{
+		for (int i = nflag; i < nLength; i++)
+		{
+			for (int j = i; j >= nflag && Input.at(j) < Input.at(j - nflag); j -= nflag)//?
+			{
+				std::swap(Input.at(j), Input.at(j - nflag));
+			}
+		}
+		nflag = nflag / 3;
+
 	}
 }
 
@@ -365,7 +391,8 @@ int main(int argc, char* argv[])
 	//std::vector<int> Out = selectionSort(In);
 	//bubbleSort(In);
 	//quickSort(In, 0, int(In.size() - 1));
-	InsertionSort(In);
+	//InsertionSort(In);
+	ShellSort(In);
 	for (int i = 0; i < int(In.size()); i++) {
 		std::cout << In.at(i)<<std::endl;
 	}
