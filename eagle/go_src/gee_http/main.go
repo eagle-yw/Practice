@@ -30,6 +30,7 @@ func FormatAsDate(t time.Time) string {
 func main(){
 	r := gee.New()
 	r.Use(gee.Logger())
+	r.Use(gee.Recovery())
 	r.SetFuncMap(template.FuncMap{
 		"FormatAsDate": FormatAsDate,
 	})
@@ -44,6 +45,12 @@ func main(){
 	r.GET("/", func(c *gee.Context){
 		c.HTML(http.StatusOK, "css.tmpl", nil)
 	})
+
+	r.GET("/panic", func(c *gee.Context) {
+		names := []string{"eagle"}
+		c.String(http.StatusOK, names[100])
+	})
+
 	r.GET("/students", func(c *gee.Context){
 		c.HTML(http.StatusOK, "arr.tmpl", gee.H{
 			"title": "gee",
