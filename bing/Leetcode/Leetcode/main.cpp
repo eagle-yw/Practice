@@ -3,6 +3,7 @@
 #include <string>
 #include <stack>
 #include <vector>
+#include <unordered_map>
 
 /**
 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
@@ -270,6 +271,82 @@ int min(std::vector<int> InPut) {
 	return nResurt;
 }
 
+/************************************************************************/
+/* 2021-5-31
+*  Description: 判断输入是否为4的幂
+*  Auto:Bing
+/************************************************************************/
+bool isPowerOfFour(int n) {
+
+	if (n != 1 && (n % 4 != 0 || n < 4 ) ) {
+		return false;
+	}
+	if (n == 1) {
+		return true;
+	}
+	int nflag = 0;
+	while (n >= 4 && n % 4 == 0)
+	{
+		n = n / 4;
+		if (n == 1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/************************************************************************/
+/* 2021-6-1
+*  Description: 力扣1744 eg.candiesCount = [7,4,5,3,8], queries = [[0,2,2],[4,2,4],[2,13,1000000000]]
+*  Auto:Bing
+/************************************************************************/
+
+std::vector<bool> canEat(std::vector<int>& candiesCount, std::vector<std::vector<int>>& queries) {
+	std::vector<bool> vresult;
+	int favoriteType = 0, favoriteDay = 0, dailyCap = 0;
+	long nNeedMin, nCaneatMax, nCaneatMin, nNeedMax = 0;//candy 
+	std::vector<long> Sum(int(candiesCount.size()));
+	Sum[0] = candiesCount[0];
+	for (int j = 1; j < int(candiesCount.size()); j++) {
+		Sum[j] = Sum[j - 1] + candiesCount.at(j);
+	}
+	for (const auto &q : queries) {
+		int favoriteType = q[0], favoriteDay = q[1], dailyCap = q[2]; 
+
+		nNeedMin = (favoriteType == 0 ? 1 : Sum[favoriteType - 1] + 1);
+		nCaneatMax = (long)(favoriteDay + 1) * dailyCap;
+		nCaneatMin = favoriteDay + 1;
+		nNeedMax = Sum[favoriteType];
+		vresult.push_back(!(nCaneatMin > nNeedMax || nCaneatMax < nNeedMin));
+	}
+	return vresult;
+}
+
+/************************************************************************/
+/* 2021-6-2
+*  Description:力扣 523 eg. nums = [23,2,4,6,6], k = 7
+*  Auto:Bing
+/************************************************************************/
+bool checkSubarraySum(std::vector<int>& nums, int k) {
+	int nlength = nums.size();
+	int nTemp, nRemainder = 0;
+	if (nlength < 2) return false;
+	std::unordered_map<int, int> unmap;
+	unmap[0] = -1;
+	for (int i = 0; i < nlength; i++) {
+		nRemainder = (nRemainder + nums[i]) % k;//?
+		if (unmap.count(nRemainder)) {
+			nTemp = unmap[nRemainder];
+			if (i - nTemp >= 2)
+				return true;
+		}
+		else {
+			unmap[nRemainder] = i;//?
+		}
+	}
+	return false;
+}
+
 /*
 选择排序 升序
 */
@@ -355,7 +432,33 @@ void InsertionSort(std::vector<T> &Input) {
 			std::swap(Input.at(j), Input.at(j + 1));
 			j--;
 		}
-		Input.at(j+1) = nKey;//???
+		Input.at(j+1) = nKey;// insert
+	}
+}
+
+/************************************************************************/
+/* 2021-5-31
+*  Description: shell sort
+*  Auto:Bing
+/************************************************************************/
+template<typename T>
+void ShellSort(std::vector<T> &Input) {
+	int nflag = 1, nLength = Input.size();
+	while (nflag < nLength /3)
+	{
+		nflag = nflag * 3 + 1;//?
+	}
+	while (nflag >= 1)
+	{
+		for (int i = nflag; i < nLength; i++)
+		{
+			for (int j = i; j >= nflag && Input.at(j) < Input.at(j - nflag); j -= nflag)//?
+			{
+				std::swap(Input.at(j), Input.at(j - nflag));
+			}
+		}
+		nflag = nflag / 3;
+
 	}
 }
 
@@ -365,10 +468,24 @@ int main(int argc, char* argv[])
 	//std::vector<int> Out = selectionSort(In);
 	//bubbleSort(In);
 	//quickSort(In, 0, int(In.size() - 1));
-	InsertionSort(In);
+	//InsertionSort(In);
+	ShellSort(In);
 	for (int i = 0; i < int(In.size()); i++) {
 		std::cout << In.at(i)<<std::endl;
 	}
+	//
+	//bool nRet = isPowerOfFour(123);
+	std::vector<int>candiesCount = { 23,2,4,6,6 };
+	std::vector<std::vector<int>> queries ;
+	queries.push_back({ 40, 1083, 86 });
+	queries.push_back({ 43, 1054, 49 });
+	queries.push_back({ 35, 669, 5 });
+	queries.push_back({ 72, 822, 74 });
+	queries.push_back({ 47, 933, 94 });
+
+	//canEat(candiesCount, queries);
+	bool nRet = checkSubarraySum(candiesCount, 7);
+	std::cout<< "\r\n"<<nRet << std::endl;
 	system("pause");
 	return 0;
 }
